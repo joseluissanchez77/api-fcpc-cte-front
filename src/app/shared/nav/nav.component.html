@@ -1,0 +1,34 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Test</a>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" routerLink="/inicio">Portafolio</a>
+                </li>
+                <li *ngIf="!userLoginOn" class="nav-item">
+                    <a class="nav-link" routerLink="/iniciar-sesion">Iniciar Sesion</a>
+                </li>
+                <li *ngIf="userLoginOn" class="nav-item">
+                    <a class="nav-link" routerLink="/clientes">Clientes</a>
+                </li>
+                <li *ngIf="userLoginOn" class="nav-item">
+                    <a class="nav-link" routerLink="/productos">Productos</a>
+                </li>
+                <li *ngIf="userLoginOn" class="nav-item">
+                    <a class="nav-link" routerLink="/orden-compra">Orden De Compra</a>
+                </li>
+                <!-- <li *ngIf="userLoginOn" class="nav-item">
+                    <a class="nav-link" (click)="cerrarSession()">Cerrar Sesion</a>
+                </li> -->
+            </ul>
+        </div>
+
+        <button *ngIf="userLoginOn" class="btn btn-outline-success" (click)="cerrarSession()">Cerrar Sesion</button>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>

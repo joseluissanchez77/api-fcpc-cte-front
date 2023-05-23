@@ -1,0 +1,51 @@
+<app-nav></app-nav>
+<!-- {{userLoginOn |json}} -->
+
+<p *ngIf="!userLoginOn">Usuario No autenticado</p>
+<p *ngIf="userLoginOn"> Usuario Atenticado</p>
+<div *ngIf="userLoginOn">
+    <p>Orden de Compra</p>
+</div>
+
+<div class="container py-15">
+    <fieldset class="border p-2 mb-1 mt-2 filters">
+        <legend class="w-auto h6">Orden de Compra</legend>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="exampleInputCompania" class="form-label">Compañia</label>
+                        <select (change)="getEstablecimiento($event)" class="form-select" formControlName="company">
+                            <option value="" selected disabled>-Selecionar-</option>
+                            <option *ngFor="let comp of objGetCompany" [ngValue]="comp.id">{{comp.razon_social}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label for="exampleInputCompania" class="form-label">Establecimiento</label>
+                        <select (change)="getPuntoEmision($event)" class="form-select"
+                            formControlName="establecimiento">
+                            <option value="" selected disabled>-Selecionar-</option>
+                            <option *ngFor="let esta of objGetEstablecimiento" [ngValue]="esta.id">
+                                {{esta.numero_establecimineto+'-'+esta.nombre}}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label for="exampleInputCompania" class="form-label">Establecimiento</label>
+                        <select (change)="getPuntoEmision($event)" class="form-select"
+                            formControlName="establecimiento">
+                            <option value="" selected disabled>-Selecionar-</option>
+                            <option *ngFor="let ptEm of objGetPuntoEmision" [ngValue]="ptEm.id">
+                                {{ptEm.numero_punto_emision+'-'+ptEm.nombre}}</option>
+                        </select>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>

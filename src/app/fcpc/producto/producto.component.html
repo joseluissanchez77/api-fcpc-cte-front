@@ -1,0 +1,157 @@
+<app-nav></app-nav>
+<!-- {{userLoginOn |json}} -->
+
+<p *ngIf="!userLoginOn">Usuario No autenticado</p>
+<p *ngIf="userLoginOn"> Usuario Atenticado</p>
+<div *ngIf="userLoginOn">
+    <p>productos</p>
+</div>
+
+<div class="container py-15">
+    <fieldset class="border p-2 mb-1 mt-2 filters">
+        <legend class="w-auto h6">Producto</legend>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- (ngSubmit)="onSubmit()" -->
+                <form [formGroup]="formGroupProductos">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="exampleInputNombre" class="form-label">Nombre</label>
+                            <input formControlName="fcn_nombre" type="text" class="form-control"
+                                [ngModel]="productoForm.nombre" id="exampleInputNombre">
+                            <div *ngIf="fcn_nombre.invalid && ( fcn_nombre.dirty || fcn_nombre.touched )"
+                                class="text-danger">
+                                <div *ngIf="fcn_nombre.errors?.['required']">
+                                    El Nombre es requerido.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="exampleInputDescripcion" class="form-label">Descripcion</label>
+                            <input formControlName="fcn_descripcion" type="text" class="form-control"
+                                [ngModel]="productoForm.descripcion" id="exampleInputDescripcion">
+                            <div *ngIf="fcn_descripcion.invalid && ( fcn_descripcion.dirty || fcn_descripcion.touched )"
+                                class="text-danger">
+                                <div *ngIf="fcn_descripcion.errors?.['required']">
+                                    La Descripcion es requerido.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="exampleInputDescripcion" class="form-label">Categoria</label>
+                            <select formControlName="fcn_categoria" class="form-select"
+                                aria-label="Default select example" [ngModel]="productoForm.categoria"
+                                (change)="selection($event)">
+                                <option value="" selected disabled>-Selecionar-</option>
+                                <option value="Alimentos">Alimentos</option>
+                                <option value="Panaderia">Panaderia</option>
+                                <option value="Mariscos">Mariscos</option>
+                                <option value="Granos">Granos</option>
+                                <option value="Frutas">Frutas</option>
+                                <option value="Utiles">Utiles</option>
+                                <option value="Otros">Otros</option>
+                            </select>
+                            <!-- <input formControlName="fcn_descripcion" type="text" class="form-control"
+                                id="exampleInputDescripcion">-->
+                            <div *ngIf="fcn_categoria.invalid &&( fcn_categoria.dirty || fcn_categoria.touched )"
+                                class="text-danger">
+                                <div *ngIf="fcn_categoria.errors?.['required']">
+                                    La Categoria es requerido.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="exampleInputCodigo" class="form-label">Codigo</label>
+                            <input formControlName="fnc_codigo" type="text" class="form-control" id="exampleInputCodigo"
+                                [ngModel]="productoForm.codigo">
+                            <div *ngIf="fnc_codigo.invalid && ( fnc_codigo.dirty || fnc_codigo.touched )"
+                                class="text-danger">
+                                <div *ngIf="fnc_codigo.errors?.['required']">
+                                    El Codigo es requerido.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="exampleInputStock" class="form-label">Stock</label>
+                            <input formControlName="fnc_stock" type="number" min="0" class="form-control"
+                                id="exampleInputStock" [ngModel]="productoForm.stock">
+                            <div *ngIf="fnc_stock.invalid && ( fnc_stock.dirty || fnc_stock.touched )"
+                                class="text-danger">
+                                <div *ngIf="fnc_stock.errors?.['required']">
+                                    El Stock es requerido.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="exampleInputPrecio" class="form-label">Precio</label>
+                            <input formControlName="fnc_precio" type="text" class="form-control"
+                                (keypress)="decimalFilter($event)" id="exampleInputPrecio"
+                                [ngModel]="productoForm.precio">
+                            <div *ngIf="fnc_precio.invalid && ( fnc_precio.dirty || fnc_precio.touched )"
+                                class="text-danger">
+                                <div *ngIf="fnc_precio.errors?.['required']">
+                                    El Stock es requerido.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <hr>
+        <div class="row">
+            <div class="col-sm-6">
+                <button type="submit" (click)="guardarProducto()" class="btn btn-primary">Guardar </button>
+                <button type="submit" (click)="editarProducto()" [disabled]="disabled" class="btn btn-info">Editar </button>
+                <button type="button" (click)="cancelarProducto()" class="btn btn-danger">Cancelar </button>
+            </div>
+        </div>
+    </fieldset>
+</div>
+<div class="container py-15">
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Acciones</th>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Descripcion</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Codigo</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of objGetProductos;" (click)="dataPersonRow(item)">
+                        <!-- <th scope="row">{{i+1}}</th> -->
+                        <td>
+                            <button class="btn btn-danger" (click)="deleteProductRow(item)" title="Elimnar Producto"><i
+                                    class="fa fa-trash"></i></button>
+                        </td>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.nombre }}</td>
+                        <td>{{ item.descripcion }}</td>
+                        <td>{{ item.categoria }}</td>
+                        <td>{{ item.codigo }}</td>
+                        <td>{{ item.stock }}</td>
+                        <td>{{ item.precio }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [boundaryLinks]="false"
+                [pageSize]="pageSize" class="d-flex justify-content-center"
+                (pageChange)="loadPage(page)"></ngb-pagination>
+
+        </div>
+
+    </div>
+</div>

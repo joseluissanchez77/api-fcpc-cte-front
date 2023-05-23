@@ -1,0 +1,53 @@
+<app-nav></app-nav>
+<!-- {{userLoginOn |json}} -->
+
+<p *ngIf="!userLoginOn">Usuario No autenticado</p>
+<p *ngIf="userLoginOn"> Usuario Atenticado</p>
+<div *ngIf="userLoginOn">
+    <p>Clientes</p>
+</div>
+
+<div class="container py-15">
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <!-- <th scope="col">Acciones</th> -->
+                        <th scope="col">#</th>
+                        <th scope="col">Tipo Identificacion</th>
+                        <th scope="col">Identificacion</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Direccion</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Telefono</th>
+                        <th scope="col">Fecha Nacimiento</th>
+                        <th scope="col">Edad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of objGetCurtomer;" (click)="dataCustomerRow(item)">
+                        <!-- <td>
+                            <button class="btn btn-danger" (click)="deleteProductRow(item)" title="Elimnar Producto"><i
+                                    class="fa fa-trash"></i></button>
+                        </td> -->
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.tipo_identificacion }}</td>
+                        <td>{{ item.identificacion }}</td>
+                        <td>{{ item.primer_nombre+' '+item.segundo_nombre+' '+item.primer_apellido+' '+item.segundo_apellido }}</td>
+                        <td>{{ item.direccion }}</td>
+                        <td>{{ item.correo }}</td>
+                        <td>{{ item.telefono }}</td>
+                        <td>{{ item.fecha_nacimiento }}</td>
+                        <td>{{ item.edad }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [boundaryLinks]="false"
+                [pageSize]="pageSize" class="d-flex justify-content-center"
+                (pageChange)="loadPage(page)"></ngb-pagination>
+
+        </div>
+
+    </div>
+</div>
