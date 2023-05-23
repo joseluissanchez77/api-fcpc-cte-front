@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { CustomerResponseI } from 'src/app/model/cliente.interface';
 import { CompanyResponseI } from 'src/app/model/compania.interface';
 import { EstablishmentlResponseI } from 'src/app/model/establecimiento.interface';
 import { UrlParameterStandardI, establecientoParameterStandardI, ptEmsionParameterStandardI } from 'src/app/model/generalParameter.interface';
@@ -47,6 +48,21 @@ export class OrdenCompraService {
     let direcion =`${this.URL_API}point_emission-by-establishment?establishment_id=${establishment_id}`;
 
     return this.http.get<PoitnEmisionResponseI>(direcion);
+
+  }
+
+
+  getCustomerPaginate(dataOption? :UrlParameterStandardI):Observable<CustomerResponseI>{
+
+    let page = dataOption?.page;
+    let size = dataOption?.size;
+    let sort = dataOption?.sort;
+    let type_sort = dataOption?.type_sort;
+    let search = dataOption?.search;
+
+    let direcion =`${this.URL_API}customer?page=${page}&size=${size}&type_sort=${type_sort}&sort=${sort}&search=${search}`;
+
+    return this.http.get<CustomerResponseI>(direcion);
 
   }
 }

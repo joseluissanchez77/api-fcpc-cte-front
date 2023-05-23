@@ -1,51 +1,134 @@
 <app-nav></app-nav>
 <!-- {{userLoginOn |json}} -->
 
-<p *ngIf="!userLoginOn">Usuario No autenticado</p>
+<!-- <p *ngIf="!userLoginOn">Usuario No autenticado</p>
 <p *ngIf="userLoginOn"> Usuario Atenticado</p>
 <div *ngIf="userLoginOn">
     <p>Orden de Compra</p>
-</div>
+</div> -->
 
 <div class="container py-15">
     <fieldset class="border p-2 mb-1 mt-2 filters">
         <legend class="w-auto h6">Orden de Compra</legend>
+        <form [formGroup]="formGroupOrdenCompra">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="exampleInputCompania" class="form-label">Compañia</label>
+                            <select  formControlName="fcn_compania" (change)="getEstablecimiento($event)" class="form-select" formControlName="company">
+                                <option value="" selected disabled>-Selecionar-</option>
+                                <option *ngFor="let comp of objGetCompany" [ngValue]="comp.id">{{comp.razon_social}}
+                                </option>
+                            </select>
+                        </div>
 
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <label for="exampleInputCompania" class="form-label">Compañia</label>
-                        <select (change)="getEstablecimiento($event)" class="form-select" formControlName="company">
-                            <option value="" selected disabled>-Selecionar-</option>
-                            <option *ngFor="let comp of objGetCompany" [ngValue]="comp.id">{{comp.razon_social}}
-                            </option>
-                        </select>
+                        <div class="col-sm-4">
+                            <label for="exampleInputCompania" class="form-label">Establecimiento</label>
+                            <select formControlName="fcn_establecimiento" (change)="getPuntoEmision($event)" class="form-select"
+                                formControlName="establecimiento">
+                                <option value="" selected disabled>-Selecionar-</option>
+                                <option *ngFor="let esta of objGetEstablecimiento" [ngValue]="esta.id">
+                                    {{esta.numero_establecimineto+'-'+esta.nombre}}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label for="exampleInputCompania" class="form-label">Punto Emision</label>
+                            <select formControlName="fcn_punto_emision" (change)="getPuntoEmision($event)" class="form-select"
+                                formControlName="establecimiento">
+                                <option value="" selected disabled>-Selecionar-</option>
+                                <option *ngFor="let ptEm of objGetPuntoEmision" [ngValue]="ptEm.id">
+                                    {{ptEm.numero_punto_emision+'-'+ptEm.nombre}}</option>
+                            </select>
+                        </div>
+
+
                     </div>
+                </div>
 
-                    <div class="col-sm-4">
-                        <label for="exampleInputCompania" class="form-label">Establecimiento</label>
-                        <select (change)="getPuntoEmision($event)" class="form-select"
-                            formControlName="establecimiento">
-                            <option value="" selected disabled>-Selecionar-</option>
-                            <option *ngFor="let esta of objGetEstablecimiento" [ngValue]="esta.id">
-                                {{esta.numero_establecimineto+'-'+esta.nombre}}</option>
-                        </select>
+                <div class="col-sm-12">
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="exampleInputCompania" class="form-label">Cliente</label>
+                            <div class="input-group mb-3">
+                                <input formControlName="fcn_cliente" type="text" class="form-control" placeholder="Buscar usuarios"
+                                    aria-label="Buscar usuarios" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-secondary btn-lg"
+                                        (click)="buscarCliente()">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-
-                    <div class="col-sm-4">
-                        <label for="exampleInputCompania" class="form-label">Establecimiento</label>
-                        <select (change)="getPuntoEmision($event)" class="form-select"
-                            formControlName="establecimiento">
-                            <option value="" selected disabled>-Selecionar-</option>
-                            <option *ngFor="let ptEm of objGetPuntoEmision" [ngValue]="ptEm.id">
-                                {{ptEm.numero_punto_emision+'-'+ptEm.nombre}}</option>
-                        </select>
-                    </div>
-
-
                 </div>
             </div>
-        </div>
+        </form>
     </fieldset>
+</div>
+
+<div
+  class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Clientes</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <!-- <th scope="col">Acciones</th> -->
+                            <th scope="col">#</th>
+                            <!-- <th scope="col">Tipo Identificacion</th> -->
+                            <th scope="col">Identificacion</th>
+                            <th scope="col">Nombre</th>
+                            <!-- <th scope="col">Direccion</th>
+                            <th scope="col">Correo</th>
+                            <th scope="col">Telefono</th>
+                            <th scope="col">Fecha Nacimiento</th>
+                            <th scope="col">Edad</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of objGetCurtomer;" (click)="dataCustomerRow(item)">
+                            <!-- <td>
+                                <button class="btn btn-danger" (click)="deleteProductRow(item)" title="Elimnar Producto"><i
+                                        class="fa fa-trash"></i></button>
+                            </td> -->
+                            <td>{{ item.id }}</td>
+                            <!-- <td>{{ item.tipo_identificacion }}</td> -->
+                            <td>{{ item.identificacion }}</td>
+                            <td>{{ item.primer_nombre+' '+item.segundo_nombre+' '+item.primer_apellido+' '+item.segundo_apellido }}</td>
+                            <!-- <td>{{ item.direccion }}</td>
+                            <td>{{ item.correo }}</td>
+                            <td>{{ item.telefono }}</td>
+                            <td>{{ item.fecha_nacimiento }}</td>
+                            <td>{{ item.edad }}</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+                <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [boundaryLinks]="false"
+                    [pageSize]="pageSize" class="d-flex justify-content-center"
+                    (pageChange)="loadPage(page)"></ngb-pagination>
+    
+            </div>
+    
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" 
+                (click)="closePopup()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
